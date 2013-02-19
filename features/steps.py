@@ -10,8 +10,3 @@ def when_i_verify(step, a_string):
 def then_i_will_get_an_error(step):
 	Approvals.verify(world.a_string)
 
-class Approvals:
-	@staticmethod
-	def verify(text):
-		raise Exception
-	
