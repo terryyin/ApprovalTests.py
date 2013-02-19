@@ -5,5 +5,5 @@ Feature: basic scenario
 	
 Scenario: No approved yet
 	When I verify "hello world"
-	Then I will get a error
+	Then I will get an error
 	

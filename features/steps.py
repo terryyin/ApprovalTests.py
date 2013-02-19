@@ -2,14 +2,16 @@ from lettuce import *
 from nose.tools import raises
 
 @step(u'When I verify "([^"]*)"')
-def when_i_verify(step, new_string):
-	world.new_string = new_string
+def when_i_verify(step, a_string):
+	world.a_string = a_string
 
-@step(u'Then I will get a error')
+@step(u'Then I will get an error')
 @raises(Exception)
-def then_i_will_get_a_error(step):
-	verify(world.new_string)
-	
-def verify(text):
-	raise Exception
+def then_i_will_get_an_error(step):
+	Approvals.verify(world.a_string)
+
+class Approvals:
+	@staticmethod
+	def verify(text):
+		raise Exception
 	
