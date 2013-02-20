@@ -18,6 +18,9 @@ class Approvals:
 	@staticmethod
 	def verify(text):
 		if Approvals.approved_string != text:
+			f = file("test.received.txt",'w')
+			f.write(text)
+			f.close()
 			raise ApprovalError("not approved yet")
 
 @step(u'When I verify "([^"]*)"')
@@ -28,6 +31,10 @@ def when_i_verify(step, a_string):
 @raises(ApprovalError)
 def then_i_will_get_an_error(step):
 	Approvals.verify(world.a_string)
+	
+@step(u'And I get a received file')
+def and_i_get_a_received_file(step):
+    assert file("test.received.txt")
 
 @step(u'Given "([^"]*)" is verified')
 def given_a_string_is_verified(step, a_string):
