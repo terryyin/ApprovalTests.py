@@ -4,6 +4,7 @@ Feature: basic scenario
 	I will verify basic text
 	
 Scenario: No approved yet
+	Given "hello world" is not verified
 	When I verify "hello world"
 	Then I will get an error
 	And I get a received file
@@ -12,4 +13,5 @@ Scenario: approved
 	Given "hello world" is verified
 	When I verify "hello world"
 	Then There is no error
+	And There is no received file
 
