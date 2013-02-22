@@ -27,19 +27,27 @@ class Reporter:
 		raise ApprovalError("not approved yet")
 		
 class Approvals:
-	approved_string = ""
-	file_manager = FileManager()
+
 	reporter = Reporter()
-		
+	
+	def __init__(self, file_mgr, rptr):
+		global approved_string, file_manager, reporter
+		approved_string = ""
+		file_manager = file_mgr
+		reporter = rptr
+			
 	@staticmethod
 	def verify(text):
-		Approvals.approved_string = Approvals.file_manager.load_approved_string()
-		
-		if Approvals.approved_string != text:
-			Approvals.file_manager.save_approved_file(text)			
-			Approvals.reporter.report_approval_error()
+		Approvals(FileManager(), Reporter()).verify_text(text)
+			
+	def verify_text(self, text):
+		approved_string = file_manager.load_approved_string()
 
-class ApprovalsForTest(Approvals):
+		if approved_string != text:
+			file_manager.save_approved_file(text)			
+			reporter.report_approval_error()
+
+class ApprovalsForTest:
 	@staticmethod
 	def init_verified_string():	
 		ApprovalsForTest.cleanup_test_files()
@@ -81,7 +89,7 @@ def when_i_verify(step, a_string):
 @step(u'Then I will get an error')
 @raises(ApprovalError)
 def then_i_will_get_an_error(step):
-	ApprovalsForTest.verify(world.a_string)
+	Approvals.verify(world.a_string)
 	
 @step(u'And I get a received file')
 def and_i_get_a_received_file(step):
@@ -97,7 +105,7 @@ def given_a_string_is_not_verified(step, a_string):
 	
 @step(u'Then There is no error')
 def then_there_is_no_error(step):
-	ApprovalsForTest.verify(world.a_string)
+	Approvals.verify(world.a_string)
 	
 @step(u'And There is no received file')
 @raises(IOError)
