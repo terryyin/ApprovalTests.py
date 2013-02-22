@@ -23,12 +23,10 @@ class FileManager():
 		f.close()
 
 class Reporter:
-	def report_approval_error(self):
+	def report(self):
 		raise ApprovalError("not approved yet")
-		
-class Approvals:
 
-	reporter = Reporter()
+class Approvals:
 	
 	def __init__(self, file_mgr, rptr):
 		global approved_string, file_manager, reporter
@@ -45,7 +43,7 @@ class Approvals:
 
 		if approved_string != text:
 			file_manager.save_approved_file(text)			
-			reporter.report_approval_error()
+			reporter.report()
 
 class ApprovalsForTest:
 	@staticmethod
