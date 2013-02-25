@@ -2,48 +2,8 @@ from lettuce import *
 from nose.tools import raises
 from os import remove
 
-class ApprovalError(Exception):
-	def __init__(self, value):
-		self.value = value
-	
-	def __str__(self):
-		return repr(self.value)
-
-class FileManager():
-		
-	def load_approved_string(self):
-		f = file("test.approved.txt",'r')
-		approved_string = f.read()
-		f.close()
-		return approved_string
-	
-	def save_approved_file(self,text):
-		f = file("test.received.txt",'w')
-		f.write(text)
-		f.close()
-
-class Reporter:
-	def report(self):
-		raise ApprovalError("not approved yet")
-
-class Approvals:
-	
-	def __init__(self, file_mgr, rptr):
-		global approved_string, file_manager, reporter
-		approved_string = ""
-		file_manager = file_mgr
-		reporter = rptr
-			
-	@staticmethod
-	def verify(text):
-		Approvals(FileManager(), Reporter()).verify_text(text)
-			
-	def verify_text(self, text):
-		approved_string = file_manager.load_approved_string()
-
-		if approved_string != text:
-			file_manager.save_approved_file(text)			
-			reporter.report()
+from src.approvalerror import ApprovalError
+from src.approvals import Approvals
 
 class ApprovalsForTest:
 	@staticmethod
